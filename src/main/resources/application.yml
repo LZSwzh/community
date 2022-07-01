@@ -29,6 +29,5 @@ mybatis:
 logging:
   level:
     com.mycode.communcity.dao: debug
-
   file:
     name: D:/MySpringBoot/log/mylog.log
