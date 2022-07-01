@@ -13,6 +13,13 @@ spring:
       idle-timeout: 30000
   thymeleaf:
     cache: false
+  mail:
+    host: smtp.sina.com
+    port: 465
+    username: emailforcoder@sina.com
+    password: 99daa415c5e2afac
+    protocol: smtps
+    
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.mycode.communcity.entity
