@@ -31,3 +31,6 @@ logging:
     com.mycode.communcity.dao: debug
   file:
     name: D:/MySpringBoot/log/mylog.log
+community:
+  path:
+    domain: http://localhost:8080
