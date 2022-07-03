@@ -28,7 +28,7 @@ mybatis:
     map-underscore-to-camel-case: true #下划线转驼峰匹配
 logging:
   level:
-    com.mycode.communcity.dao: debug
+    com.mycode.communcity: debug
   file:
     name: D:/MySpringBoot/log/mylog.log
 community:
