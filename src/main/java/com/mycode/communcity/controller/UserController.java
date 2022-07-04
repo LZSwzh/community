@@ -1,5 +1,6 @@
 package com.mycode.communcity.controller;
 
+import com.mycode.communcity.Annotation.LoginRequired;
 import com.mycode.communcity.entity.LoginTicket;
 import com.mycode.communcity.entity.User;
 import com.mycode.communcity.service.UserService;
@@ -46,6 +47,7 @@ public class UserController {
     /**
      * 上传头像
      */
+    @LoginRequired
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
     public String uploadHeader(MultipartFile headImage, Model model){
         //判断图片是否为空
@@ -136,6 +138,7 @@ public class UserController {
     /**
      * 跳转账号设置页面
      */
+    @LoginRequired
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
