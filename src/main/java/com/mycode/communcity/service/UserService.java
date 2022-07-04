@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class UserService implements CommunityConstant {
 
     @Autowired
     private MailClient mailClient;//注入邮件客户端，用于发送邮件
-    @Autowired
+    @Resource
     private TemplateEngine templateEngine;//注入模板引擎，用于发送动态邮件
     @Value("${community.path.domain}")
     private String domain;//注入域名
@@ -70,7 +71,8 @@ public class UserService implements CommunityConstant {
         }
         //注册用户
         user.setSalt(CommunityUtil.generateUUID().substring(0,5));//随机字符串生成
-        user.setPassword(CommunityUtil.md5(user.getPassword()+user.getSalt()));
+        String psd = CommunityUtil.md5(user.getPassword()+user.getSalt());
+        user.setPassword(psd);
         user.setType(0);//普通用户
         user.setStatus(0);//未激活
         user.setActivationCode(CommunityUtil.generateUUID());//激活码
@@ -129,7 +131,7 @@ public class UserService implements CommunityConstant {
         }
         //验证密码
         password = CommunityUtil.md5(password+user.getSalt());
-        if (user.getPassword().equals(password)){
+        if (!user.getPassword().equals(password)){
             map.put("passwordMsg","密码不正确");
             return map;
         }
@@ -161,4 +163,38 @@ public class UserService implements CommunityConstant {
     public LoginTicket findLoginTicket(String ticket){
         return loginTicketMapper.selectByTicket(ticket);
     }
+    /**
+     * 更新头像路径
+     */
+    public int updateHeader(int userId,String headerUrl){
+        return userMapper.updateHeaderUrl(userId,headerUrl);
+    }
+    /**
+     * 更新密码
+     */
+    public Map<String,Object> updatePassword(User user,String oldPwd,String newPwd,String newPwdAgain){
+        HashMap<String, Object> map = new HashMap<>();
+        oldPwd = oldPwd+user.getSalt();
+        oldPwd = CommunityUtil.md5(oldPwd);
+        if (!user.getPassword().equals(oldPwd)){
+            map.put("oldMsg","原始密码不正确");
+            return map;
+        }
+        //判断新密码长度
+        if (newPwd.length()<8){
+            map.put("newMsg","密码长度应该大于8位数");
+            return map;
+        }
+        //判断重复密码是否相同
+        if (!newPwd.equals(newPwdAgain)){
+            map.put("newAginMsg","两次密码不同");
+            return map;
+        }
+        //验证完毕，更新密码
+        newPwd = CommunityUtil.md5(newPwd+user.getSalt());
+        userMapper.updatePassword(user.getId(),newPwd);
+        return map;
+    }
+
+
 }

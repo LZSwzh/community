@@ -34,3 +34,4 @@ logging:
 community:
   path:
     domain: http://localhost:8080
+    upload: D:/MySpringBoot/Projects/workspace #定义本地上传路径

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import sun.security.krb5.internal.Ticket;
+
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
